@@ -1,0 +1,113 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
+import { useEffect, useState } from "react"
+import type { RootState } from "../store"
+import { useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
+import { useLogoutMutation } from "../slices/userApiSlice"
+import { clearCredentials } from "../slices/authSlice"
+export const Route = createFileRoute("/")({
+    component: Index,
+})
+import { EnvelopeOpenIcon } from "@radix-ui/react-icons"
+
+import { Button } from "@/components/ui/button"
+
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Link } from "@tanstack/react-router"
+
+function Index() {
+    const { userInfo } = useSelector((state: RootState) => state.auth)
+    const navigate = useNavigate()
+    useEffect(() => {
+        if (!userInfo?.verified) navigate({ to: "/" })
+    }, [navigate, userInfo])
+
+    const dispatch = useDispatch()
+    const [logoutApiCall] = useLogoutMutation()
+    const logoutHandler = async () => {
+        try {
+            await logoutApiCall({}).unwrap()
+            dispatch(clearCredentials())
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    console.log(userInfo)
+
+    return userInfo?.verified ? (
+        <div className="flex justify-center items-center h-screen">
+            <Card className="w-[500px]">
+                <CardHeader>
+                    <CardTitle>Hello {userInfo?.username} 🚀 </CardTitle>
+                    <CardDescription>Welcome back!!</CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-col items-center">
+                    <Link to="/vs-computer">
+                        <Button className="w-96 my-4" variant="outline">
+                            Human vs Computer
+                        </Button>
+                    </Link>
+                    <Link to="/">
+                        <Button className="w-96 my-4" variant="outline">
+                            Human vs Human
+                        </Button>
+                    </Link>
+                    <Link to="/">
+                        <Button className="w-96 my-4" variant="outline">
+                            Quick Play
+                        </Button>
+                    </Link>
+                    <Button className="w-96 my-4" variant="outline">
+                        Create Game
+                    </Button>
+                    <div className="flex w-full max-w-sm items-center space-x-2">
+                        <Input type="email" placeholder="Enter a code or link" />
+                        <Button type="submit">Join</Button>
+                    </div>
+                    <Link to="/ranking">
+                        <Button className="w-96 my-4" variant="outline">
+                            Ranking
+                        </Button>
+                    </Link>
+                    <Link to="/community">
+                        <Button className="w-96 my-4" variant="outline">
+                            Community
+                        </Button>
+                    </Link>
+                    <Link to="/">
+                        <Button className="w-96 my-4" variant="outline">
+                            Profile
+                        </Button>
+                    </Link>
+                    <Button className="w-96 my-4" onClick={logoutHandler} variant="destructive">
+                        Logout
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
+    ) : (
+        <div className="flex justify-center items-center h-screen">
+            <Card className="w-[900px] h-96 flex flex-col items-center">
+                <CardHeader>
+                    <CardTitle>Hey there, Welcome to Chess.com♟️.</CardTitle>
+                </CardHeader>
+                <CardContent className="my-10 w-[500px]">
+                    <p>Play interactive chess online with people around the world Create new account to join the large community of players or Login to your existing account, and start enjoying all the chess.</p>
+                </CardContent>
+                <CardFooter className="my-5">
+                    <Link to="/login">
+                        <Button>
+                            <EnvelopeOpenIcon className="mr-2 h-4 w-4" /> Login with Email
+                        </Button>
+                    </Link>
+                    <Link to="/register">
+                        <Button className="mx-5" variant="secondary">
+                            Create new Account
+                        </Button>
+                    </Link>
+                </CardFooter>
+            </Card>
+        </div>
+    )
+}

@@ -1,37 +1,28 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { toast } from "react-toastify"
-export const Route = createFileRoute("/reset-password")({
+export const Route = createFileRoute("/_auth/reset-password")({
     component: ResetPassword,
 })
-import { useEffect, useState } from "react"
+import { useState } from "react"
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 
-import type { RootState } from "../store"
+import type { RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
-import { useResetPasswordMutation } from "../slices/userApiSlice"
-import { setCredentials } from "../slices/authSlice"
+import { useResetPasswordMutation } from "../../slices/userApiSlice"
+import { setCredentials } from "../../slices/authSlice"
 
 export function ResetPassword() {
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
 
-    const navigate = useNavigate({ from: "/login" })
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-
     const [resetPassword] = useResetPasswordMutation()
-
     const { userInfo } = useSelector((state: RootState) => state.auth)
-
-    useEffect(() => {
-        if (!userInfo?.otp) {
-            navigate({ to: "/login" })
-        }
-    }, [navigate, userInfo])
-
     const submitHandler = async () => {
         if (password.length < 8) {
             toast.error("Password should have atleast 8 characters.")
@@ -64,7 +55,7 @@ export function ResetPassword() {
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password">Confirm password</Label>
-                        <Input id="password" type="password" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        <Input id="password2" type="password" placeholder="Confirm new password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
                     <Button onClick={submitHandler} className="w-full">
                         Change Password

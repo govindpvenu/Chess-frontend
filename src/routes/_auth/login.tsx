@@ -1,41 +1,29 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { toast } from "react-toastify"
-export const Route = createFileRoute("/login")({
+import { createFileRoute, useNavigate, Link } from "@tanstack/react-router"
+export const Route = createFileRoute("/_auth/login")({
     component: Login,
 })
-import { useEffect, useState } from "react"
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Icons } from "@/components/ui/icons"
-import { Link } from "@tanstack/react-router"
 
-import type { RootState } from "../store"
-import { useDispatch, useSelector } from "react-redux"
-import { useLoginMutation } from "../slices/userApiSlice"
-import { setCredentials } from "../slices/authSlice"
+import { useState } from "react"
+import { toast } from "react-toastify"
+import { useDispatch } from "react-redux"
+import { useLoginMutation } from "../../slices/userApiSlice"
+import { setCredentials } from "../../slices/authSlice"
 
 export function Login() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const navigate = useNavigate()
-
-    const google = () => {
-        window.open("http://localhost:5000/auth/google")
-    }
-
-    const { userInfo } = useSelector((state: RootState) => state.auth)
-    const [login] = useLoginMutation()
     const dispatch = useDispatch()
-
-    useEffect(() => {
-        if (userInfo?.verified) {
-            navigate({ to: "/" })
-        }
-    }, [navigate, userInfo])
-
+    const [login] = useLoginMutation()
+    const googleAuth = () => {
+        window.open("http://localhost:5000/api/user/auth/google", "_self")
+    }
     const submitHandler = async () => {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             toast.error("Email is not valid.")
@@ -45,6 +33,7 @@ export function Login() {
             try {
                 const res = await login({ email, password }).unwrap()
                 dispatch(setCredentials({ ...res }))
+                navigate({ to: "/" })
             } catch (err: any) {
                 console.log(err?.data?.message || err?.error)
                 toast.error(err?.data?.message || err.error)
@@ -90,7 +79,7 @@ export function Login() {
                         </div>
                     </div>
                     <div className="grid grid-cols-1 gap-6">
-                        <Button variant="outline" onClick={google}>
+                        <Button variant="outline" onClick={googleAuth}>
                             <Icons.google className="mr-2 h-4 w-4" />
                             Google
                         </Button>

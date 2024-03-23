@@ -1,7 +1,7 @@
 import { ModeToggle } from "./mode-toggle"
 import ProfileAvatar from "./profile-avatar"
 import Logo from "../assets/logo.png"
-import { NavigationMenu, navigationMenuTriggerStyle, NavigationMenuContent, NavigationMenuIndicator, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, NavigationMenuViewport } from "@/components/ui/navigation-menu"
+import { NavigationMenu, navigationMenuTriggerStyle, NavigationMenuItem, NavigationMenuList } from "@/components/ui/navigation-menu"
 import { Link } from "@tanstack/react-router"
 import { Button } from "./ui/button"
 import type { RootState } from "../store"
@@ -15,50 +15,48 @@ export function NavBar() {
             <div className="flex h-16 items-center px-4">
                 <NavigationMenu>
                     <NavigationMenuList>
-                        <Link to="/">
-                            <NavigationMenuItem>
-                                <NavigationMenuLink>
-                                    <img className="w-32" src={Logo} alt="Chess.com" />
-                                </NavigationMenuLink>
-                            </NavigationMenuItem>
-                        </Link>
+                        <NavigationMenuItem>
+                            <Link to="/">
+                                <img className="w-32" src={Logo} alt="Chess.com" />
+                            </Link>
+                        </NavigationMenuItem>
                         {userInfo?.verified ? (
                             <>
-                                <Link to="/">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
-                                <Link to="/community">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>Community</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
+                                <NavigationMenuItem>
+                                    <Link to="/" className={navigationMenuTriggerStyle()}>
+                                        Home
+                                    </Link>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link to="/community" className={navigationMenuTriggerStyle()}>
+                                        Community
+                                    </Link>
+                                </NavigationMenuItem>
 
-                                <Link to="/ranking">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>Ranking</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
+                                <NavigationMenuItem>
+                                    <Link to="/ranking" className={navigationMenuTriggerStyle()}>
+                                        Ranking
+                                    </Link>
+                                </NavigationMenuItem>
 
-                                <Link to="/about">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>About</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
+                                <NavigationMenuItem>
+                                    <Link to="/about" className={navigationMenuTriggerStyle()}>
+                                        About
+                                    </Link>
+                                </NavigationMenuItem>
                             </>
                         ) : (
                             <>
-                                <Link to="/">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>Home</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
-                                <Link to="/about">
-                                    <NavigationMenuItem>
-                                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>About</NavigationMenuLink>
-                                    </NavigationMenuItem>
-                                </Link>
+                                <NavigationMenuItem>
+                                    <Link to="/" className={navigationMenuTriggerStyle()}>
+                                        Home
+                                    </Link>
+                                </NavigationMenuItem>
+                                <NavigationMenuItem>
+                                    <Link to="/about" className={navigationMenuTriggerStyle()}>
+                                        About
+                                    </Link>
+                                </NavigationMenuItem>
                             </>
                         )}
                     </NavigationMenuList>

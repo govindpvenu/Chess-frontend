@@ -1,13 +1,13 @@
 import { useNavigate } from "@tanstack/react-router"
+import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card"
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp"
+
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
-import { Card, CardContent, CardDescription, CardHeader, CardFooter, CardTitle } from "@/components/ui/card"
-import type { RootState } from "../store"
+import { useDispatch, useSelector } from "react-redux"
 import { useResendOtpMutation, useVerifyOtpMutation } from "../slices/userApiSlice"
 import { setCredentials } from "../slices/authSlice"
-import { useDispatch, useSelector } from "react-redux"
-
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/components/ui/input-otp"
+import type { RootState } from "../store"
 
 export function VerifyOtpRegister() {
     const [otp, setOtp] = useState<string | null>(null)
@@ -38,8 +38,6 @@ export function VerifyOtpRegister() {
     }
 
     const onSubmit = async () => {
-        console.log("Entered OTP: ", otp)
-        console.log("userInfo: ", userInfo.otp)
         if (otp == userInfo?.otp) {
             const res = await verifyOtp({ email: userInfo.email }).unwrap()
             dispatch(setCredentials({ ...res }))

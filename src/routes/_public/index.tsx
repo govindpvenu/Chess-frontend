@@ -1,28 +1,19 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useEffect, useState } from "react"
-import type { RootState } from "../store"
-import { useSelector } from "react-redux"
-import { useDispatch } from "react-redux"
-import { useLogoutMutation } from "../slices/userApiSlice"
-import { clearCredentials } from "../slices/authSlice"
-export const Route = createFileRoute("/")({
+import { createFileRoute, Link } from "@tanstack/react-router"
+export const Route = createFileRoute("/_public/")({
     component: Index,
 })
 import { EnvelopeOpenIcon } from "@radix-ui/react-icons"
-
 import { Button } from "@/components/ui/button"
-
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Link } from "@tanstack/react-router"
+
+import { useSelector, useDispatch } from "react-redux"
+import { useLogoutMutation } from "../../slices/userApiSlice"
+import { clearCredentials } from "../../slices/authSlice"
+import type { RootState } from "../../store"
 
 function Index() {
     const { userInfo } = useSelector((state: RootState) => state.auth)
-    const navigate = useNavigate()
-    useEffect(() => {
-        if (!userInfo?.verified) navigate({ to: "/" })
-    }, [navigate, userInfo])
-
     const dispatch = useDispatch()
     const [logoutApiCall] = useLogoutMutation()
     const logoutHandler = async () => {
@@ -33,7 +24,6 @@ function Index() {
             console.log(err)
         }
     }
-    console.log(userInfo)
 
     return userInfo?.verified ? (
         <div className="flex justify-center items-center h-screen">
@@ -48,7 +38,7 @@ function Index() {
                             Human vs Computer
                         </Button>
                     </Link>
-                    <Link to="/">
+                    <Link to="/vs-human">
                         <Button className="w-96 my-4" variant="outline">
                             Human vs Human
                         </Button>

@@ -1,41 +1,32 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-export const Route = createFileRoute("/register")({
+import { createFileRoute, Link } from "@tanstack/react-router"
+export const Route = createFileRoute("/_auth/register")({
     component: Register,
 })
-import { toast } from "react-toastify"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { VerifyOtpRegister } from "@/components/VerifyOtpRegister"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Link } from "@tanstack/react-router"
-import { useState, useEffect } from "react"
+
+import { useState } from "react"
+import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
-import { useRegisterMutation } from "../slices/userApiSlice"
-import type { RootState } from "../store"
-import { setCredentials } from "../slices/authSlice"
-import { VerifyOtpRegister } from "@/components/VerifyOtpRegister"
+import { useRegisterMutation } from "../../slices/userApiSlice"
+import { setCredentials } from "../../slices/authSlice"
+import type { RootState } from "../../store"
 
 function Register() {
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [showLoader, setShowLoader] = useState(false)
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const [register] = useRegisterMutation()
     const { userInfo } = useSelector((state: RootState) => state.auth)
 
-    useEffect(() => {
-        if (userInfo?.verified) navigate({ to: "/" })
-    }, [navigate, userInfo])
-
     const submitHandler = async () => {
-        function validateEmail(email: any) {
-            var re = /\S+@\S+\.\S+/
-            return re.test(email)
-        }
-
         if (username.length < 3) {
             toast.error("User name should have atleast 3 characters.")
         } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -46,11 +37,12 @@ function Register() {
             toast.error("Passwords do not match.")
         } else {
             try {
+                setShowLoader(true)
                 const res = await register({ username, email, password }).unwrap()
                 console.log(res)
                 dispatch(setCredentials({ ...res }))
-                // navigate({ to: "/verify-otp" })
             } catch (err: any) {
+                setShowLoader(false)
                 console.log(err)
                 toast.error(err?.data?.message || err.error)
             }
@@ -81,7 +73,7 @@ function Register() {
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="password">Confirm password</Label>
-                        <Input id="password" type="password" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                        <Input id="password2" type="password" placeholder="Confirm password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
                     {/* <div className="grid gap-2">
             <Label htmlFor="password">Country</Label>
@@ -96,9 +88,13 @@ function Register() {
                             </Link>
                         </Label>
                     </div>
-                    <Button onClick={submitHandler} className="w-full">
-                        Create account
-                    </Button>
+                    {showLoader ? (
+                        <Button className="w-full">Processing..</Button>
+                    ) : (
+                        <Button onClick={submitHandler} className="w-full">
+                            Create account
+                        </Button>
+                    )}
                 </CardContent>
                 <CardFooter></CardFooter>
             </Card>

@@ -5,14 +5,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { useDispatch } from "react-redux"
 import { useLogoutMutation } from "../slices/userApiSlice"
 import { clearCredentials } from "../slices/authSlice"
+import { useNavigate } from "@tanstack/react-router"
 
 const ProfileAvatar = () => {
     const dispatch = useDispatch()
     const [logoutApiCall] = useLogoutMutation()
+    const navigate = useNavigate()
     const logoutHandler = async () => {
         try {
             await logoutApiCall({}).unwrap()
             dispatch(clearCredentials())
+            window.open("http://localhost:5000/api/user/auth/google/logout", "_self")
+            navigate({ to: "/" })
         } catch (err) {
             console.log(err)
         }

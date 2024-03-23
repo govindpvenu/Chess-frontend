@@ -1,47 +1,39 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { toast } from "react-toastify"
-export const Route = createFileRoute("/forgot-password")({
+import { createFileRoute } from "@tanstack/react-router"
+export const Route = createFileRoute("/_auth/forgot-password")({
     component: ForgotPassword,
 })
-import { useEffect, useState } from "react"
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Icons } from "@/components/ui/icons"
-import { Link } from "@tanstack/react-router"
 import { VerifyOtpForgetPass } from "@/components/VerifyOtpForgetPass"
 
-import type { RootState } from "../store"
+import { useState } from "react"
+import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
-import { useForgotPasswordMutation } from "../slices/userApiSlice"
-import { setCredentials } from "../slices/authSlice"
+import { useForgotPasswordMutation } from "../../slices/userApiSlice"
+import { setCredentials } from "../../slices/authSlice"
+import type { RootState } from "../../store"
 
 export function ForgotPassword() {
     const [email, setEmail] = useState("")
-
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const [showLoader, setShowLoader] = useState(false)
 
     const [forgotPassword] = useForgotPasswordMutation()
-
+    const dispatch = useDispatch()
     const { userInfo } = useSelector((state: RootState) => state.auth)
-
-    useEffect(() => {
-        if (userInfo?.verified) {
-            navigate({ to: "/" })
-        }
-    }, [navigate, userInfo])
 
     const submitHandler = async () => {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             toast.error("Email is not valid.")
         } else {
             try {
+                setShowLoader(true)
                 const res = await forgotPassword({ email }).unwrap()
                 dispatch(setCredentials({ ...res }))
             } catch (err: any) {
+                setShowLoader(false)
                 console.log(err?.data?.message || err?.error)
                 toast.error(err?.data?.message || err.error)
             }
@@ -62,10 +54,13 @@ export function ForgotPassword() {
                         <Label htmlFor="email">Email</Label>
                         <Input id="email" type="email" placeholder="example@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
-
-                    <Button onClick={submitHandler} className="w-full">
-                        Send Verification Code
-                    </Button>
+                    {showLoader ? (
+                        <Button className="w-full">Processing..</Button>
+                    ) : (
+                        <Button onClick={submitHandler} className="w-full">
+                            Send Verification Code
+                        </Button>
+                    )}
                 </CardContent>
             </Card>
         </div>

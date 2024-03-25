@@ -39,3 +39,30 @@
 //         </div>
 //     )
 // }
+
+
+// const [gameOver, setGameOver] = useState({ status: false, message: "" })
+// <AlertDialog defaultOpen={gameOver?.status}>
+// <AlertDialogContent>
+//     <AlertDialogHeader>
+//         <AlertDialogTitle>{gameOver?.message}</AlertDialogTitle>
+//         <AlertDialogDescription>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</AlertDialogDescription>
+//     </AlertDialogHeader>
+//     <AlertDialogFooter>
+//         <AlertDialogCancel>Cancel</AlertDialogCancel>
+//         <AlertDialogAction>Continue</AlertDialogAction>
+//     </AlertDialogFooter>
+// </AlertDialogContent>
+// </AlertDialog>
+{/* <AlertDialog defaultOpen={gameOver}>
+<AlertDialogContent>
+    <AlertDialogHeader>
+        <AlertDialogTitle>{gameOver}</AlertDialogTitle>
+        <AlertDialogDescription>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</AlertDialogDescription>
+    </AlertDialogHeader>
+    <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+</AlertDialogContent>
+</AlertDialog> */}

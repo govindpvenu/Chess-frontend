@@ -26,7 +26,7 @@ function Index() {
     }
 
     return userInfo?.verified ? (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center h-full">
             <Card className="w-[500px]">
                 <CardHeader>
                     <CardTitle>Hello {userInfo?.username} 🚀 </CardTitle>

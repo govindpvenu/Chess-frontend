@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { RouterProvider, createRouter } from "@tanstack/react-router"
 import { routeTree } from "./routeTree.gen"
 import { ToastContainer } from "react-toastify"
+import { Toaster } from "@/components/ui/toaster"
 import "react-toastify/dist/ReactToastify.css"
 import { useAuth } from "./hooks/useAuth"
 import { useEffect } from "react"
@@ -26,6 +27,7 @@ const App = () => {
     return (
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
             <ToastContainer />
+            <Toaster />
             <RouterProvider router={router} context={{ authentication }} />
         </ThemeProvider>
     )

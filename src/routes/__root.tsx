@@ -32,8 +32,9 @@ import { NavBar } from "../components/nav-bar"
 function RootComponent() {
     return (
         <>
-            <NavBar />
-            <Outlet />
+            
+                <NavBar />
+                <Outlet />
             <TanStackRouterDevtools />
         </>
     )

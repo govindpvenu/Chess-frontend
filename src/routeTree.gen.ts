@@ -10,149 +10,163 @@
 
 // Import Routes
 
-import { Route as rootRoute } from "./routes/__root"
-import { Route as PublicImport } from "./routes/_public"
-import { Route as PrivateImport } from "./routes/_private"
-import { Route as AuthImport } from "./routes/_auth"
-import { Route as PublicIndexImport } from "./routes/_public/index"
-import { Route as PublicVsHumanImport } from "./routes/_public/vs-human"
-import { Route as PublicVsComputerImport } from "./routes/_public/vs-computer"
-import { Route as PublicAboutImport } from "./routes/_public/about"
-import { Route as PrivateRankingImport } from "./routes/_private/ranking"
-import { Route as PrivateCommunityImport } from "./routes/_private/community"
-import { Route as AuthResetPasswordImport } from "./routes/_auth/reset-password"
-import { Route as AuthRegisterImport } from "./routes/_auth/register"
-import { Route as AuthLoginImport } from "./routes/_auth/login"
-import { Route as AuthForgotPasswordImport } from "./routes/_auth/forgot-password"
+import { Route as rootRoute } from './routes/__root'
+import { Route as PublicImport } from './routes/_public'
+import { Route as PrivateImport } from './routes/_private'
+import { Route as AuthImport } from './routes/_auth'
+import { Route as PublicIndexImport } from './routes/_public/index'
+import { Route as PublicVsHumanImport } from './routes/_public/vs-human'
+import { Route as PublicVsComputerImport } from './routes/_public/vs-computer'
+import { Route as PublicAboutImport } from './routes/_public/about'
+import { Route as PrivateRankingImport } from './routes/_private/ranking'
+import { Route as PrivateCommunityImport } from './routes/_private/community'
+import { Route as AuthResetPasswordImport } from './routes/_auth/reset-password'
+import { Route as AuthRegisterImport } from './routes/_auth/register'
+import { Route as AuthLoginImport } from './routes/_auth/login'
+import { Route as AuthForgotPasswordImport } from './routes/_auth/forgot-password'
 
 // Create/Update Routes
 
 const PublicRoute = PublicImport.update({
-    id: "/_public",
-    getParentRoute: () => rootRoute,
+  id: '/_public',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const PrivateRoute = PrivateImport.update({
-    id: "/_private",
-    getParentRoute: () => rootRoute,
+  id: '/_private',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const AuthRoute = AuthImport.update({
-    id: "/_auth",
-    getParentRoute: () => rootRoute,
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
 } as any)
 
 const PublicIndexRoute = PublicIndexImport.update({
-    path: "/",
-    getParentRoute: () => PublicRoute,
+  path: '/',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 const PublicVsHumanRoute = PublicVsHumanImport.update({
-    path: "/vs-human",
-    getParentRoute: () => PublicRoute,
+  path: '/vs-human',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 const PublicVsComputerRoute = PublicVsComputerImport.update({
-    path: "/vs-computer",
-    getParentRoute: () => PublicRoute,
+  path: '/vs-computer',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 const PublicAboutRoute = PublicAboutImport.update({
-    path: "/about",
-    getParentRoute: () => PublicRoute,
+  path: '/about',
+  getParentRoute: () => PublicRoute,
 } as any)
 
 const PrivateRankingRoute = PrivateRankingImport.update({
-    path: "/ranking",
-    getParentRoute: () => PrivateRoute,
+  path: '/ranking',
+  getParentRoute: () => PrivateRoute,
 } as any)
 
 const PrivateCommunityRoute = PrivateCommunityImport.update({
-    path: "/community",
-    getParentRoute: () => PrivateRoute,
+  path: '/community',
+  getParentRoute: () => PrivateRoute,
 } as any)
 
 const AuthResetPasswordRoute = AuthResetPasswordImport.update({
-    path: "/reset-password",
-    getParentRoute: () => AuthRoute,
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthRegisterRoute = AuthRegisterImport.update({
-    path: "/register",
-    getParentRoute: () => AuthRoute,
+  path: '/register',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthLoginRoute = AuthLoginImport.update({
-    path: "/login",
-    getParentRoute: () => AuthRoute,
+  path: '/login',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 const AuthForgotPasswordRoute = AuthForgotPasswordImport.update({
-    path: "/forgot-password",
-    getParentRoute: () => AuthRoute,
+  path: '/forgot-password',
+  getParentRoute: () => AuthRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
-declare module "@tanstack/react-router" {
-    interface FileRoutesByPath {
-        "/_auth": {
-            preLoaderRoute: typeof AuthImport
-            parentRoute: typeof rootRoute
-        }
-        "/_private": {
-            preLoaderRoute: typeof PrivateImport
-            parentRoute: typeof rootRoute
-        }
-        "/_public": {
-            preLoaderRoute: typeof PublicImport
-            parentRoute: typeof rootRoute
-        }
-        "/_auth/forgot-password": {
-            preLoaderRoute: typeof AuthForgotPasswordImport
-            parentRoute: typeof AuthImport
-        }
-        "/_auth/login": {
-            preLoaderRoute: typeof AuthLoginImport
-            parentRoute: typeof AuthImport
-        }
-        "/_auth/register": {
-            preLoaderRoute: typeof AuthRegisterImport
-            parentRoute: typeof AuthImport
-        }
-        "/_auth/reset-password": {
-            preLoaderRoute: typeof AuthResetPasswordImport
-            parentRoute: typeof AuthImport
-        }
-        "/_private/community": {
-            preLoaderRoute: typeof PrivateCommunityImport
-            parentRoute: typeof PrivateImport
-        }
-        "/_private/ranking": {
-            preLoaderRoute: typeof PrivateRankingImport
-            parentRoute: typeof PrivateImport
-        }
-        "/_public/about": {
-            preLoaderRoute: typeof PublicAboutImport
-            parentRoute: typeof PublicImport
-        }
-        "/_public/vs-computer": {
-            preLoaderRoute: typeof PublicVsComputerImport
-            parentRoute: typeof PublicImport
-        }
-        "/_public/vs-human": {
-            preLoaderRoute: typeof PublicVsHumanImport
-            parentRoute: typeof PublicImport
-        }
-        "/_public/": {
-            preLoaderRoute: typeof PublicIndexImport
-            parentRoute: typeof PublicImport
-        }
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/_auth': {
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
     }
+    '/_private': {
+      preLoaderRoute: typeof PrivateImport
+      parentRoute: typeof rootRoute
+    }
+    '/_public': {
+      preLoaderRoute: typeof PublicImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/forgot-password': {
+      preLoaderRoute: typeof AuthForgotPasswordImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/login': {
+      preLoaderRoute: typeof AuthLoginImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/register': {
+      preLoaderRoute: typeof AuthRegisterImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/reset-password': {
+      preLoaderRoute: typeof AuthResetPasswordImport
+      parentRoute: typeof AuthImport
+    }
+    '/_private/community': {
+      preLoaderRoute: typeof PrivateCommunityImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_private/ranking': {
+      preLoaderRoute: typeof PrivateRankingImport
+      parentRoute: typeof PrivateImport
+    }
+    '/_public/about': {
+      preLoaderRoute: typeof PublicAboutImport
+      parentRoute: typeof PublicImport
+    }
+    '/_public/vs-computer': {
+      preLoaderRoute: typeof PublicVsComputerImport
+      parentRoute: typeof PublicImport
+    }
+    '/_public/vs-human': {
+      preLoaderRoute: typeof PublicVsHumanImport
+      parentRoute: typeof PublicImport
+    }
+    '/_public/': {
+      preLoaderRoute: typeof PublicIndexImport
+      parentRoute: typeof PublicImport
+    }
+  }
 }
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren([AuthRoute.addChildren([AuthForgotPasswordRoute, AuthLoginRoute, AuthRegisterRoute, AuthResetPasswordRoute]), PrivateRoute.addChildren([PrivateCommunityRoute, PrivateRankingRoute]), PublicRoute.addChildren([PublicAboutRoute, PublicVsComputerRoute, PublicVsHumanRoute, PublicIndexRoute])])
+export const routeTree = rootRoute.addChildren([
+  AuthRoute.addChildren([
+    AuthForgotPasswordRoute,
+    AuthLoginRoute,
+    AuthRegisterRoute,
+    AuthResetPasswordRoute,
+  ]),
+  PrivateRoute.addChildren([PrivateCommunityRoute, PrivateRankingRoute]),
+  PublicRoute.addChildren([
+    PublicAboutRoute,
+    PublicVsComputerRoute,
+    PublicVsHumanRoute,
+    PublicIndexRoute,
+  ]),
+])
 
 /* prettier-ignore-end */

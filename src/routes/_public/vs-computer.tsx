@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../store"
 import { saveGame, clearGame } from "../../slices/gameSlice"
 import { Button } from "@/components/ui/button"
-import { HistoryCard } from "@/components/history-card"
+import { HistoryCard } from "@/components/HistoryCard"
 
 function HumanVsComputer() {
     const dispatch = useDispatch()
@@ -35,7 +35,7 @@ function HumanVsComputer() {
 
     function isOver() {
         if (game.in_checkmate()) {
-            return { title: "White wins", description: "White won the game by checkmate." }
+            return { title: "White wins", description: `${game.turn()=== "w" ? "Black" : "White"} won the game by checkmate.` }
         } else if (game.in_draw()) {
             return { title: "Draw", description: "It's a draw." }
         } else if (game.in_stalemate()) {

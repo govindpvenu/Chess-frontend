@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 export const Route = createFileRoute("/_public/")({
     component: Index,
 })
@@ -6,15 +6,23 @@ import { EnvelopeOpenIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Label } from "@/components/ui/label"
 
+import socket from "../../socket"
 import { useSelector, useDispatch } from "react-redux"
 import { useLogoutMutation } from "../../slices/userApiSlice"
 import { clearCredentials } from "../../slices/authSlice"
 import type { RootState } from "../../store"
+import { CreateGame } from "@/components/CreateGame"
+import { useState } from "react"
+import { toast } from "react-toastify"
 
 function Index() {
     const { userInfo } = useSelector((state: RootState) => state.auth)
+    const [roomInput, setRoomInput] = useState("");
     const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [logoutApiCall] = useLogoutMutation()
     const logoutHandler = async () => {
         try {
@@ -24,7 +32,6 @@ function Index() {
             console.log(err)
         }
     }
-
     return userInfo?.verified ? (
         <div className="flex justify-center items-center h-full">
             <Card className="w-[500px]">
@@ -43,18 +50,12 @@ function Index() {
                             Human vs Human
                         </Button>
                     </Link>
-                    <Link to="/">
+                    <Link to="/game">
                         <Button className="w-96 my-4" variant="outline">
-                            Quick Play
+                            Play Online
                         </Button>
                     </Link>
-                    <Button className="w-96 my-4" variant="outline">
-                        Create Game
-                    </Button>
-                    <div className="flex w-full max-w-sm items-center space-x-2">
-                        <Input type="email" placeholder="Enter a code or link" />
-                        <Button type="submit">Join</Button>
-                    </div>
+
                     <Link to="/ranking">
                         <Button className="w-96 my-4" variant="outline">
                             Ranking

@@ -19,6 +19,7 @@ import { Route as PublicVsHumanImport } from './routes/_public/vs-human'
 import { Route as PublicVsComputerImport } from './routes/_public/vs-computer'
 import { Route as PublicAboutImport } from './routes/_public/about'
 import { Route as PrivateRankingImport } from './routes/_private/ranking'
+import { Route as PrivateGameImport } from './routes/_private/game'
 import { Route as PrivateCommunityImport } from './routes/_private/community'
 import { Route as AuthResetPasswordImport } from './routes/_auth/reset-password'
 import { Route as AuthRegisterImport } from './routes/_auth/register'
@@ -64,6 +65,11 @@ const PublicAboutRoute = PublicAboutImport.update({
 
 const PrivateRankingRoute = PrivateRankingImport.update({
   path: '/ranking',
+  getParentRoute: () => PrivateRoute,
+} as any)
+
+const PrivateGameRoute = PrivateGameImport.update({
+  path: '/game',
   getParentRoute: () => PrivateRoute,
 } as any)
 
@@ -128,6 +134,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivateCommunityImport
       parentRoute: typeof PrivateImport
     }
+    '/_private/game': {
+      preLoaderRoute: typeof PrivateGameImport
+      parentRoute: typeof PrivateImport
+    }
     '/_private/ranking': {
       preLoaderRoute: typeof PrivateRankingImport
       parentRoute: typeof PrivateImport
@@ -160,7 +170,11 @@ export const routeTree = rootRoute.addChildren([
     AuthRegisterRoute,
     AuthResetPasswordRoute,
   ]),
-  PrivateRoute.addChildren([PrivateCommunityRoute, PrivateRankingRoute]),
+  PrivateRoute.addChildren([
+    PrivateCommunityRoute,
+    PrivateGameRoute,
+    PrivateRankingRoute,
+  ]),
   PublicRoute.addChildren([
     PublicAboutRoute,
     PublicVsComputerRoute,

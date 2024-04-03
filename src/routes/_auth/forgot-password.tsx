@@ -12,7 +12,7 @@ import { VerifyOtpForgetPass } from "@/components/VerifyOtpForgetPass"
 import { useState } from "react"
 import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
-import { useForgotPasswordMutation } from "../../slices/userApiSlice"
+import { useForgotPasswordMutation } from "../../slices/authApiSlice"
 import { setCredentials } from "../../slices/authSlice"
 import type { RootState } from "../../store"
 
@@ -42,7 +42,7 @@ export function ForgotPassword() {
     return userInfo?.otp ? (
         <VerifyOtpForgetPass />
     ) : (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center flex-1 overflow-y-auto">
             <Card className="w-[350px]">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl">Forgot Passoword</CardTitle>

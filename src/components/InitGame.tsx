@@ -28,7 +28,7 @@ export function InitGame({ setRoom, setOrientation, setPlayers }: any) {
         })
     }
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center flex-1 overflow-auto-y">
             <Card className="w-[900px] h-96 flex flex-col items-center">
                 <CardHeader>
                     <CardTitle>Play Online with your friend</CardTitle>

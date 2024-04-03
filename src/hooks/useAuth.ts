@@ -12,7 +12,7 @@ export const useAuth = () => {
 
     const googleAuth = () => {
         console.log("Google auth..")
-        fetch("http://localhost:5000/api/user/auth/login/success", {
+        fetch("http://localhost:5000/api/auth/auth/login/success", {
             method: "GET",
             credentials: "include",
         })
@@ -26,6 +26,7 @@ export const useAuth = () => {
                     setCredentials({
                         username: resObject.user.username,
                         email: resObject.user.email,
+                        profile: resObject.user.profile,
                         verified: resObject.user.verified,
                     })
                 )

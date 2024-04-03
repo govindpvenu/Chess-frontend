@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 
 import { useEffect, useState } from "react"
-import { Chess } from "chess.js"
+import { Chess,Square } from "chess.js"
 import { Chessboard } from "react-chessboard"
 
 import { useDispatch, useSelector } from "react-redux"
@@ -55,7 +55,7 @@ function HumanVsComputer() {
         dispatch(saveGame({ mode: "vs-computer", position: game.fen() }))
     }
 
-    function onDrop(sourceSquare: any, targetSquare: any) {
+    function onDrop(sourceSquare: Square, targetSquare: Square) {
         let move = game.move({
             from: sourceSquare,
             to: targetSquare,
@@ -97,12 +97,12 @@ function HumanVsComputer() {
     }
 
     return (
-        <ResizablePanelGroup direction="horizontal" className="max-w-full rounded-lg border">
+        <ResizablePanelGroup direction="horizontal" className="max-w-full rounded-lg border h-full">
             <ResizablePanel defaultSize={70}>
-                <div className="flex h-full items-center justify-center p-6">
-                    <div className="flex-col justify-center items-center h-full">
+                <div className="flex items-center justify-center">
+                    <div className="flex-col justify-center items-center ">
                         <div className="w-[700px] h-auto">
-                            <Chessboard
+                            <Chessboard 
                                 id="PlayVsRandom"
                                 position={position}
                                 onPieceDrop={onDrop}
@@ -143,7 +143,7 @@ function HumanVsComputer() {
             </ResizablePanel>
             <ResizableHandle />
             <ResizablePanel defaultSize={30}>
-                <div className="flex h-full items-center justify-center p-6">
+                <div className="flex h-full items-center justify-center">
                     <HistoryCard history={game.history()} />
                 </div>
             </ResizablePanel>

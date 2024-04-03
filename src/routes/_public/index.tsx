@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label"
 
 import socket from "../../socket"
 import { useSelector, useDispatch } from "react-redux"
-import { useLogoutMutation } from "../../slices/userApiSlice"
+import { useLogoutMutation } from "../../slices/authApiSlice"
 import { clearCredentials } from "../../slices/authSlice"
 import type { RootState } from "../../store"
 import { CreateGame } from "@/components/CreateGame"
@@ -33,7 +33,7 @@ function Index() {
         }
     }
     return userInfo?.verified ? (
-        <div className="flex justify-center items-center h-full">
+        <div className="flex justify-center items-center flex-1 overflow-y-auto"> 
             <Card className="w-[500px]">
                 <CardHeader>
                     <CardTitle>Hello {userInfo?.username} 🚀 </CardTitle>
@@ -66,7 +66,7 @@ function Index() {
                             Community
                         </Button>
                     </Link>
-                    <Link to="/">
+                    <Link to="/profile">
                         <Button className="w-96 my-4" variant="outline">
                             Profile
                         </Button>
@@ -78,7 +78,7 @@ function Index() {
             </Card>
         </div>
     ) : (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center flex-1 overflow-y-auto">
             <Card className="w-[900px] h-96 flex flex-col items-center">
                 <CardHeader>
                     <CardTitle>Hey there, Welcome to Chess.com♟️.</CardTitle>

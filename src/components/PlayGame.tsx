@@ -4,18 +4,23 @@ import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 
 import { useCallback, useEffect, useState } from "react"
-import { Chess } from "chess.js"
+import { Chess, Square } from "chess.js"
 import { Chessboard } from "react-chessboard"
 import socket from "../socket"
-
+import type { RootState } from "../store"
 import { useDispatch, useSelector } from "react-redux"
 import { saveGame, clearGame } from "../slices/gameSlice"
 import { Button } from "@/components/ui/button"
 import { HistoryCard } from "@/components/HistoryCard"
 import { useNavigate } from "@tanstack/react-router"
+import { useUpdateWinsMutation } from "../slices/gameApiSlice"
 
 export function PlayGame({ players, room, orientation, cleanup }: any) {
+    const { userInfo } = useSelector((state: RootState) => state.auth)
+
     const [game] = useState(new Chess())
+    const [updateWins] = useUpdateWinsMutation()
+
     const [position, setPosition] = useState("start")
 
     const dispatch = useDispatch()
@@ -23,8 +28,12 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
     const navigate = useNavigate()
     const { toast } = useToast()
 
-    function isOver() {
+    function  isOver() {
         if (game.in_checkmate()) {
+            async function update() {
+                const res = await updateWins({ email: userInfo?.email }).unwrap()
+            }
+            update()
             return { title: "White wins", description: `${game.turn() === "w" ? "Black" : "White"} won the game by checkmate.` }
         } else if (game.in_draw()) {
             return { title: "Draw", description: "It's a draw." }
@@ -68,7 +77,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
         [game]
     )
 
-    function onDrop(sourceSquare: any, targetSquare: any) {
+    function onDrop(sourceSquare: Square, targetSquare: Square) {
         console.log("Ondrop")
         if (game.turn() !== orientation[0]) return false // <- 1 prohibit player from moving piece of other player
 
@@ -103,9 +112,9 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
     return (
         <ResizablePanelGroup direction="horizontal" className="max-w-full rounded-lg border">
             <ResizablePanel defaultSize={70}>
-                <div className="flex h-full items-center justify-center p-6">
-                    <div className="flex-col justify-center items-center h-full">
-                        <p className="font-semibold my-2">Game ID:{room}</p>
+                <div className="flex items-center justify-center">
+                    <div className="flex-col justify-center items-center">
+                        <p className="font-semibold">Game ID:{room}</p>
                         <div className="w-[700px] h-auto">
                             <Chessboard
                                 id="PlayVsRandom"
@@ -150,7 +159,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
             <ResizablePanel defaultSize={30}>
                 <ResizablePanelGroup direction="vertical">
                     <ResizablePanel defaultSize={70}>
-                        <div className="flex h-full items-center justify-center p-6">
+                        <div className="flex h-full items-center justify-center">
                             <HistoryCard history={game.history()} />
                         </div>
                     </ResizablePanel>

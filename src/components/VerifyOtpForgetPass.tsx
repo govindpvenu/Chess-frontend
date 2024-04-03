@@ -5,7 +5,7 @@ import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "@/comp
 import { useState, useEffect } from "react"
 import { toast } from "react-toastify"
 import { useDispatch, useSelector } from "react-redux"
-import { useResendOtpMutation } from "../slices/userApiSlice"
+import { useResendOtpMutation } from "../slices/authApiSlice"
 import { setCredentials } from "../slices/authSlice"
 import type { RootState } from "../store"
 

@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 
 import type { RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
-import { useResetPasswordMutation } from "../../slices/userApiSlice"
+import { useResetPasswordMutation } from "../../slices/authApiSlice"
 import { setCredentials } from "../../slices/authSlice"
 
 export function ResetPassword() {
@@ -41,7 +41,7 @@ export function ResetPassword() {
         }
     }
     return (
-        <div className="flex justify-center items-center h-screen">
+        <div className="flex justify-center items-center flex-1 overflow-auto-y">
             <Card className="w-[350px]">
                 <CardHeader className="space-y-1">
                     <CardTitle className="text-2xl">Reset Passoword</CardTitle>

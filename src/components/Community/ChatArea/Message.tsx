@@ -1,14 +1,30 @@
-const Message = () => {
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useSelector } from "react-redux"
+import type { RootState } from "../../../store"
+import { extractTime } from "../../../lib/extractTime"
+
+const Message = ({ message }: any) => {
+    const { userInfo } = useSelector((state: RootState) => state.auth)
+    const { selectedConversation } = useSelector((state: RootState) => state.user)
+    const fromMe = message.senderId === userInfo._id
+    const formattedTime = extractTime(message.createdAt)
+    const chatClassName = fromMe ? "flex-row-reverse" : "flex-row"
+    const avatarImage = fromMe ? userInfo.profile : (selectedConversation as any)?.profile
+    const avatarFallback = fromMe ? userInfo.username[0].toUpperCase() : (selectedConversation as any)?.username[0].toUpperCase()
+    const bubbleBgColor = fromMe ? "bg-primary" : "bg-secondary"
+
     return (
-        <div className="chat chat-end">
-            <div className="chat-image avatar">
-                <div className="w-10 rounded-full">
-                    <img alt="Tailwind CSS chat bubble component" src={"https://cdn0.iconfinder.com/data/icons/communication-line-10/24/account_profile_user_contact_person_avatar_placeholder-512.png"} />
-                </div>
+        <div className={`flex items-start gap-3 ${chatClassName}`}>
+            <Avatar className="h-10 w-10">
+                <AvatarImage src={avatarImage} alt="Image not available" />
+                <AvatarFallback>{avatarFallback}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col">
+                <span className={`p-3 rounded-md max-w-xs ${bubbleBgColor}`}>{message.message}</span>
+                <p className="text-sm text-muted-foreground py-2">{formattedTime}</p>
             </div>
-            <div className={"chat-bubble text-white bg-blue-500"}>Hi! What is upp?</div>
-            <div className="chat-footer opacity-50 text-xs flex gap-1 items-center">12:42</div>
         </div>
     )
 }
+
 export default Message

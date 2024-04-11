@@ -3,6 +3,7 @@ export const Route = createFileRoute("/_public/about")({
     component: About,
 })
 
+
 // import Link from "next/link"
 import { Activity, ArrowUpRight, CircleUser, CreditCard, DollarSign, Menu, Package2, Search, Users } from "lucide-react"
 
@@ -23,7 +24,8 @@ import Message from "@/components/Community/ChatArea/Message"
 
 function About() {
   return(
-    <Message/>
+<>
+</>
   )
     // return (
     //   <div className="flex justify-center items-center flex-1 overflow-y-auto">

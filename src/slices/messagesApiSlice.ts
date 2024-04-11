@@ -2,6 +2,9 @@ import { apiSlice } from "./apiSlice"
 
 const MESSAGES_URL = "/api/messages"
 
+
+
+
 export const messagesApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         sendMessage: builder.mutation({
@@ -11,6 +14,11 @@ export const messagesApiSlice = apiSlice.injectEndpoints({
                 body: message,
             }),
         }),
+        getMessages: builder.query({
+            query: ({id}) => ({
+                url: `${MESSAGES_URL}/${id}`,
+            }),
+        }),
         }),
 })
-export const {useSendMessageMutation} = messagesApiSlice
+export const {useSendMessageMutation,useGetMessagesQuery} = messagesApiSlice

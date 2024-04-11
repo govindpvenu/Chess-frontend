@@ -24,6 +24,7 @@ export const useAuth = () => {
                 console.log(resObject)
                 dispatch(
                     setCredentials({
+                        _id: resObject.user?._id,
                         username: resObject.user.username,
                         email: resObject.user.email,
                         profile: resObject.user.profile,

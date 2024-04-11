@@ -1,7 +1,10 @@
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
-import { useToast } from "@/components/ui/use-toast"
+//
+
 import { ToastAction } from "@/components/ui/toast"
+import { useToast } from "@/components/ui/use-toast"
+// import { toast } from "react-toastify"
 
 import { useCallback, useEffect, useState } from "react"
 import { Chess, Square } from "chess.js"
@@ -14,10 +17,15 @@ import { Button } from "@/components/ui/button"
 import { HistoryCard } from "@/components/HistoryCard"
 import { useNavigate } from "@tanstack/react-router"
 import { useUpdateWinsMutation } from "../slices/gameApiSlice"
+import GameOver from "./GameOver"
+import Timer from "./Timer"
+import { time } from "console"
 
 export function PlayGame({ players, room, orientation, cleanup }: any) {
     const { userInfo } = useSelector((state: RootState) => state.auth)
-
+    const [gaveOver, setGameOver] = useState(false)
+    const [state, setState] = useState(false)
+    const [start, setStart] = useState(false)
     const [game] = useState(new Chess())
     const [updateWins] = useUpdateWinsMutation()
 
@@ -28,7 +36,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
     const navigate = useNavigate()
     const { toast } = useToast()
 
-    function  isOver() {
+    function isOver() {
         if (game.in_checkmate()) {
             async function update() {
                 const res = await updateWins({ email: userInfo?.email }).unwrap()
@@ -53,20 +61,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
 
                 const over = isOver()
                 if (over) {
-                    toast({
-                        title: over.title,
-                        description: over.description,
-                        action: (
-                            <ToastAction
-                                onClick={() => {
-                                    window.location.reload()
-                                }}
-                                altText="Game over"
-                            >
-                                Ok
-                            </ToastAction>
-                        ),
-                    })
+                    setGameOver(true)
                 }
 
                 return result
@@ -79,9 +74,23 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
 
     function onDrop(sourceSquare: Square, targetSquare: Square) {
         console.log("Ondrop")
-        if (game.turn() !== orientation[0]) return false // <- 1 prohibit player from moving piece of other player
+        if (game.turn() !== orientation[0]) {
+            toast({
+                title: "Uh oh! wrong moves.",
+                description: "That was illegal move..",
+                action: <ToastAction altText="Try another">Try another</ToastAction>,
+            })
+            return false
+        } // <- 1 prohibit player from moving piece of other player
 
-        if (players.length < 2) return false // <- 2 disallow a move if the opponent has not joined
+        if (players.length < 2) {
+            toast({
+                title: "Uh oh! .",
+                description: "Opponent not joined.",
+                action: <ToastAction altText="Try another">Try another</ToastAction>,
+            })
+            return false
+        } // <- 2 disallow a move if the opponent has not joined
 
         const moveData = {
             from: sourceSquare,
@@ -93,7 +102,14 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
         const move = makeAMove(moveData)
 
         // illegal move
-        if (move === null) return false
+        if (move === null) {
+            toast({
+                title: "Uh oh! wrong moves.",
+                description: "That was illegal move..",
+                action: <ToastAction altText="Try another">Try another</ToastAction>,
+            })
+            return false
+        }
 
         socket.emit("move", {
             // <- 3 emit a move event.
@@ -106,15 +122,23 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
 
     useEffect(() => {
         socket.on("move", (move) => {
-            makeAMove(move) 
+            setState(!state)
+            makeAMove(move)
         })
     }, [makeAMove])
+    let time = new Date()
+    time.setSeconds(time.getSeconds() + 600) // 10 minutes timer
+
     return (
         <ResizablePanelGroup direction="horizontal" className="max-w-full rounded-lg border">
             <ResizablePanel defaultSize={70}>
                 <div className="flex items-center justify-center">
                     <div className="flex-col justify-center items-center">
                         <p className="font-semibold">Game ID:{room}</p>
+                        <div className="my-5">
+                            <Timer expiryTimestamp={time} state={state} />
+                        </div>
+
                         <div className="w-[700px] h-auto">
                             <Chessboard
                                 id="PlayVsRandom"
@@ -129,9 +153,29 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
                                 }}
                             />
                         </div>
+                        <Timer expiryTimestamp={time} state={!state} />
 
+                        <AlertDialog open={gaveOver}>
+                            <AlertDialogTrigger></AlertDialogTrigger>
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle>White Wins</AlertDialogTitle>
+                                    <AlertDialogDescription>White won the game by checkmate.</AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel>Home</AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() => {
+                                            window.location.reload()
+                                        }}
+                                    >
+                                        Play again
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
                         <AlertDialog>
-                            <AlertDialogTrigger className="my-9 dark" asChild>
+                            <AlertDialogTrigger className="my-9 mx-5 dark " asChild>
                                 <Button variant="destructive">Resign</Button>
                             </AlertDialogTrigger>
                             <AlertDialogContent>

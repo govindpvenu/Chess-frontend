@@ -22,8 +22,14 @@ function MessageInput() {
         try {
             setLoading(true)
             console.log({message})
+
             const res = await sendMessage({ id: (selectedConversation as any)?._id, message }).unwrap()
-            dispatch(setMessages([...messages,res]))
+            console.log("res:",res)
+            console.log("setMessages:",[...messages, res])
+            
+            console.log("messages1:",messages)
+            dispatch(setMessages([...messages, res]))
+            console.log("messages2:",messages)
             setMessage("")
 
         } catch (error: any) {

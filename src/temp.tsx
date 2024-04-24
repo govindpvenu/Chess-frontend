@@ -67,7 +67,7 @@
 </AlertDialogContent>
 </AlertDialog> */
 }
-<div className="border-b">
+{/* <div className="border-b">
 <div className="flex h-16 items-center px-4">
     <NavigationMenu>
         <NavigationMenuList>
@@ -133,4 +133,34 @@
         )}
     </div>
 </div>
-</div>
+</div> */}
+
+  // const lastMessageRef = useRef<HTMLElement>(null) // Set initial type
+
+    // useEffect(() => {
+    //     setTimeout(() => {
+    //         ;(lastMessageRef.current as HTMLElement)?.scrollIntoView({ behavior: "smooth" })
+    //     }, 100)
+    // }, [messages])
+
+    // useEffect(() => {
+    //     const getMessages = async () => {
+    //         try {
+    //             const { data, error, isLoading } = useGetMessagesQuery({ id: (selectedConversation as any)?._id })
+    //             console.log("mmmmmmmm",messages)
+    //             dispatch(setMessages(data))
+    //             if (error) throw new Error(data.error)
+    //         } catch (error: any) {
+    //             console.error(error?.message)
+    //         } 
+    //     }
+    //     getMessages()
+    // }, [setMessages])
+
+
+    // useEffect(() => {
+    //     // cleanup function (unmounts component)
+    //     return () => {
+    //         dispatch(setSelectedConversation(null))
+    //     }
+    // }, [setSelectedConversation])

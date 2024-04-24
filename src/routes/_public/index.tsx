@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { useLogoutMutation } from "../../slices/authApiSlice"
 import { clearCredentials } from "../../slices/authSlice"
 import type { RootState } from "../../store"
-import { CreateGame } from "@/components/CreateGame"
+import { CreateGame } from "@/components/Game/CreateGame"
 import { useState } from "react"
 import { toast } from "react-toastify"
 

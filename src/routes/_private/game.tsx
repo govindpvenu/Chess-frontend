@@ -6,8 +6,8 @@ export const Route = createFileRoute("/_private/game")({
 import socket from "../../socket"
 import { useSelector } from "react-redux"
 import type { RootState } from "../../store"
-import { InitGame } from "@/components/InitGame"
-import { PlayGame } from "@/components/PlayGame"
+import { InitGame } from "@/components/Game/InitGame"
+import { PlayGame } from "@/components/Game/PlayGame"
 
 function Game() {
     const { userInfo } = useSelector((state: RootState) => state.auth)
@@ -43,6 +43,6 @@ function Game() {
 
         />
     ) : (
-        <InitGame setRoom={setRoom} setOrientation={setOrientation} setPlayers={setPlayers} />
+        <InitGame orientation={orientation} setRoom={setRoom} setOrientation={setOrientation} setPlayers={setPlayers} />
     )
 }

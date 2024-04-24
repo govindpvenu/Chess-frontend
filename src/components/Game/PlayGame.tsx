@@ -9,14 +9,14 @@ import { useToast } from "@/components/ui/use-toast"
 import { useCallback, useEffect, useState } from "react"
 import { Chess, Square } from "chess.js"
 import { Chessboard } from "react-chessboard"
-import socket from "../socket"
-import type { RootState } from "../store"
+import socket from "../../socket"
+import type { RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
-import { saveGame, clearGame } from "../slices/gameSlice"
+import { saveGame, clearGame } from "../../slices/gameSlice"
 import { Button } from "@/components/ui/button"
-import { HistoryCard } from "@/components/HistoryCard"
+import { HistoryCard } from "@/components/Game/HistoryCard"
 import { useNavigate } from "@tanstack/react-router"
-import { useUpdateWinsMutation } from "../slices/gameApiSlice"
+import { useUpdateWinsMutation } from "../../slices/gameApiSlice"
 import GameOver from "./GameOver"
 import Timer from "./Timer"
 import { time } from "console"
@@ -135,14 +135,16 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
                 <div className="flex items-center justify-center">
                     <div className="flex-col justify-center items-center">
                         <p className="font-semibold">Game ID:{room}</p>
-                        <div className="my-5">
+                        <p className="font-semibold">You are playing as {orientation}</p>
+                        {/* <div className="my-5">
                             <Timer expiryTimestamp={time} state={state} />
-                        </div>
+                        </div> */}
 
                         <div className="w-[700px] h-auto">
                             <Chessboard
                                 id="PlayVsRandom"
                                 position={position}
+                                boardOrientation={orientation}
                                 onPieceDrop={onDrop}
                                 // arePremovesAllowed={true}
                                 customDarkSquareStyle={{ backgroundColor: "#739451" }}
@@ -153,7 +155,8 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
                                 }}
                             />
                         </div>
-                        <Timer expiryTimestamp={time} state={!state} />
+                        
+                        {/* <Timer expiryTimestamp={time} state={!state} /> */}
 
                         <AlertDialog open={gaveOver}>
                             <AlertDialogTrigger></AlertDialogTrigger>

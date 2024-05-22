@@ -6,7 +6,7 @@ import { useGetOtherUsersQuery } from "../../../slices/userApiSlice"
 function Conversations() {
     const { data: conversations, error, isLoading } = useGetOtherUsersQuery({})
     console.log("CONVERSATION:", conversations)
-    // console.log("Error:", error)
+    console.log("Error:", error)
     return (
         <ScrollArea className="h-[86vh] rounded-md border p-1">
             {isLoading ? (

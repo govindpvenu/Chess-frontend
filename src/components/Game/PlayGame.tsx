@@ -136,9 +136,9 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
                     <div className="flex-col justify-center items-center">
                         <p className="font-semibold">Game ID:{room}</p>
                         <p className="font-semibold">You are playing as {orientation}</p>
-                        {/* <div className="my-5">
+                        <div className="my-5">
                             <Timer expiryTimestamp={time} state={state} />
-                        </div> */}
+                        </div>
 
                         <div className="w-[700px] h-auto">
                             <Chessboard
@@ -156,7 +156,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
                             />
                         </div>
                         
-                        {/* <Timer expiryTimestamp={time} state={!state} /> */}
+                        <Timer expiryTimestamp={time} state={!state} />
 
                         <AlertDialog open={gaveOver}>
                             <AlertDialogTrigger></AlertDialogTrigger>

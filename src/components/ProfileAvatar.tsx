@@ -6,14 +6,13 @@ import { useDispatch } from "react-redux"
 import { useLogoutMutation } from "../slices/authApiSlice"
 import { clearCredentials } from "../slices/authSlice"
 import { clearGame } from "../slices/gameSlice"
-import { useNavigate } from "@tanstack/react-router"
+import { Link, useNavigate } from "@tanstack/react-router"
 import { useSelector } from "react-redux"
 import type { RootState } from "../store"
 
-
 const ProfileAvatar = () => {
     const { userInfo } = useSelector((state: RootState) => state.auth)
-    
+
     const dispatch = useDispatch()
     const [logoutApiCall] = useLogoutMutation()
     const navigate = useNavigate()
@@ -47,8 +46,10 @@ const ProfileAvatar = () => {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>Profile</DropdownMenuItem>
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
+                    <Link to="/profile">
+                        <DropdownMenuItem>Profile</DropdownMenuItem>
+                    </Link>
+                    {/* <DropdownMenuItem>Settings</DropdownMenuItem> */}
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={logoutHandler}>Log out</DropdownMenuItem>

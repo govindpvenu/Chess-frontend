@@ -8,7 +8,7 @@ import { useToast } from "@/components/ui/use-toast"
 import { ToastAction } from "@/components/ui/toast"
 
 import { useEffect, useState } from "react"
-import { Chess,Square } from "chess.js"
+import { Chess, Square } from "chess.js"
 import { Chessboard } from "react-chessboard"
 
 import { useDispatch, useSelector } from "react-redux"
@@ -18,12 +18,14 @@ import { Button } from "@/components/ui/button"
 import { HistoryCard } from "@/components/Game/HistoryCard"
 
 function HumanVsComputer() {
+    const moveSound = new Audio('/public/move.mp3');
     const dispatch = useDispatch()
     const { gameState } = useSelector((state: RootState) => state.game)
     const navigate = useNavigate()
     const { toast } = useToast()
     const [game] = useState(new Chess())
     const [position, setPosition] = useState("start")
+
     useEffect(() => {
         console.log("useEffect:", gameState)
         if (gameState?.mode === "vs-computer" && gameState?.position) {
@@ -35,7 +37,7 @@ function HumanVsComputer() {
 
     function isOver() {
         if (game.in_checkmate()) {
-            return { title: "White wins", description: `${game.turn()=== "w" ? "Black" : "White"} won the game by checkmate.` }
+            return { title: "White wins", description: `${game.turn() === "w" ? "Black" : "White"} won the game by checkmate.` }
         } else if (game.in_draw()) {
             return { title: "Draw", description: "It's a draw." }
         } else if (game.in_stalemate()) {
@@ -46,10 +48,38 @@ function HumanVsComputer() {
             return false
         }
     }
+    // function findBestMove() {
+    //     stockfish.postMessage("position fen " + position)
+    //     stockfish.postMessage("go depth " + "2")
+
+    //     stockfish.onmessage = function (event: any) {
+    //         const message = event.data
+    //         if (message.startsWith("bestmove")) {
+    //             const bestMove = message.split(" ")[1]
+    //             game.move(bestMove)
+    //             setPosition(game.fen())
+    //             dispatch(saveGame({ mode: "vs-computer", position: game.fen() }))
+    //         }
+    //     }
+    // }
+
+    // function findBestMove() {
+    //     engine.evaluatePosition(game.fen(), 2)
+
+    //     engine.onMessage(({ bestMove }: any) => {
+    //         if (bestMove) {
+    //             game.move(bestMove)
+    //             setPosition(game.fen())
+    //             dispatch(saveGame({ mode: "vs-computer", position: game.fen() }))
+    //         }
+    //     })
+    // }
+
     function makeRandomMove() {
         const possibleMoves = game.moves()
         const randomIndex = Math.floor(Math.random() * possibleMoves.length)
         game.move(possibleMoves[randomIndex])
+        moveSound.play()
         // isOver()
         setPosition(game.fen())
         dispatch(saveGame({ mode: "vs-computer", position: game.fen() }))
@@ -71,6 +101,7 @@ function HumanVsComputer() {
             // })
             return false
         }
+        moveSound.play();
         setPosition(game.fen())
         dispatch(saveGame({ mode: "vs-computer", position: game.fen() }))
         const over = isOver()
@@ -102,7 +133,7 @@ function HumanVsComputer() {
                 <div className="flex items-center justify-center">
                     <div className="flex-col justify-center items-center ">
                         <div className="w-[700px] h-auto">
-                            <Chessboard 
+                            <Chessboard
                                 id="PlayVsRandom"
                                 position={position}
                                 onPieceDrop={onDrop}
@@ -147,7 +178,6 @@ function HumanVsComputer() {
                     <HistoryCard history={game.history()} />
                 </div>
             </ResizablePanel>
-
         </ResizablePanelGroup>
     )
 }

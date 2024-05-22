@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../../store"
 import { setMessages } from "../../../slices/messagesSlice"
 
-function MessageInput() {
+function MessageInput({mes,setMes}:any) {
     const [loading, setLoading] = useState(false)
     const [message, setMessage] = useState("")
     const dispatch = useDispatch()
@@ -21,15 +21,12 @@ function MessageInput() {
         if (!message) return
         try {
             setLoading(true)
-            console.log({message})
 
             const res = await sendMessage({ id: (selectedConversation as any)?._id, message }).unwrap()
             console.log("res:",res)
-            console.log("setMessages:",[...messages, res])
             
-            console.log("messages1:",messages)
-            dispatch(setMessages([...messages, res]))
-            console.log("messages2:",messages)
+            // dispatch(setMessages([...messages, res]))
+            setMes([...mes, res])
             setMessage("")
 
         } catch (error: any) {

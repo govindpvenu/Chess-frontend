@@ -38,7 +38,6 @@ function Community() {
                 ) : (
                     <div className="flex h-full min-h-[93vh] flex-col bg-muted/50 lg:col-span-2">
                         <MessageContainer />
-                        <MessageInput />
                     </div>
                 )}
             </ResizablePanel>

@@ -21,7 +21,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body: data,
             }),
         }),
-    }),
-    
+    }),  
 })
+
 export const { useGetAllUsersQuery,useGetOtherUsersQuery,useUpdateUserMutation } = usersApiSlice

@@ -12,10 +12,10 @@ import { PlayGame } from "@/components/Game/PlayGame"
 function Game() {
     const { userInfo } = useSelector((state: RootState) => state.auth)
 
-    const [room, setRoom] = useState<string>("")
+    const [room, setRoom] = useState("")
     const [orientation, setOrientation] = useState("")
     const [players, setPlayers] = useState([])
-    // resets the states responsible for initializing a game
+
     const cleanup = useCallback(() => {
         setRoom("")
         setOrientation("")
@@ -23,11 +23,8 @@ function Game() {
     }, [])
 
     useEffect(() => {
-        // const username = prompt("Username");
-        // setUsername(username);
         socket.emit("username", userInfo?.username)
         socket.on("opponentJoined", (roomData: any) => {
-            console.log("roomData", roomData)
             setPlayers(roomData.players)
         })
     }, [])
@@ -38,11 +35,13 @@ function Game() {
         orientation={orientation}
         username={userInfo?.username}
         players={players}
-        // the cleanup function will be used by Game to reset the state when a game is over
         cleanup={cleanup}
-
         />
     ) : (
-        <InitGame orientation={orientation} setRoom={setRoom} setOrientation={setOrientation} setPlayers={setPlayers} />
+        <InitGame
+        orientation={orientation}
+        setRoom={setRoom}
+        setOrientation={setOrientation}
+        setPlayers={setPlayers} />
     )
 }

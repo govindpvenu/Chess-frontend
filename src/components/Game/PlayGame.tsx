@@ -12,14 +12,11 @@ import { Chessboard } from "react-chessboard"
 import socket from "../../socket"
 import type { RootState } from "../../store"
 import { useDispatch, useSelector } from "react-redux"
-import { saveGame, clearGame } from "../../slices/gameSlice"
 import { Button } from "@/components/ui/button"
-import { HistoryCard } from "@/components/Game/HistoryCard"
+import { HistoryCard } from "@/components/Game/GameComponents/HistoryCard"
 import { useNavigate } from "@tanstack/react-router"
 import { useUpdateWinsMutation } from "../../slices/gameApiSlice"
-import GameOver from "./GameOver"
-import Timer from "./Timer"
-import { time } from "console"
+import Timer from "./GameComponents/Timer"
 
 export function PlayGame({ players, room, orientation, cleanup }: any) {
     const { userInfo } = useSelector((state: RootState) => state.auth)
@@ -126,6 +123,7 @@ export function PlayGame({ players, room, orientation, cleanup }: any) {
             makeAMove(move)
         })
     }, [makeAMove])
+
     let time = new Date()
     time.setSeconds(time.getSeconds() + 600) // 10 minutes timer
 

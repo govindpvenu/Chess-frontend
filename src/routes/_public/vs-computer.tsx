@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "../../store"
 import { saveGame, clearGame } from "../../slices/gameSlice"
 import { Button } from "@/components/ui/button"
-import { HistoryCard } from "@/components/Game/HistoryCard"
+import { HistoryCard } from "@/components/Game/GameComponents/HistoryCard"
 
 function HumanVsComputer() {
     const moveSound = new Audio('/public/move.mp3');
